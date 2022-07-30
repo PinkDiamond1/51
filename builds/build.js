@@ -7,6 +7,8 @@
   const fse = require('fs-extra');
   const { minify } = require("terser");
 
+  const  htmlMinifier = require('html-minifier-terser');
+
   fse.emptyDirSync('./docs'); 
   console.log('removed any file in /docs'); 
 
@@ -37,6 +39,14 @@
   fse.writeFileSync('./docs/libs/createSTPEngine.js', code); 
 
 
+  code = fse.readFileSync('./docs/console.html',{encoding:'utf8', flag:'r'});
+  code = (await htmlMinifier.minify(code, {
+    minifyJS : true,
+    minifyCSS : true,
+    collapseWhitespace: true
+  }));
+
+  console.log(code);
 
   console.log('build completed !!!');
 
