@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+<link rel="stylesheet" href="51.css">
+<link rel="stylesheet" href="third.parties/highlight.js.11.5.1/a11y-dark.min.css">
+<style>
+
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th {
+    text-align: left;
+    padding:10px 0;
+    xborder-bottom:1px solid #333;
+    xbackground:lightblue;
+    xfont-weight:normal;
+  }
+
+  td {
+    vertical-align: top;
+  }
+
+  
+  tr:nth-child(2)  { border-bottom:4px solid #fff; }
+  tr:nth-child(5)  { border-bottom:4px solid #fff; }
+  tr:nth-child(7)  { border-bottom:4px solid #fff; }
+  tr:nth-child(10) { border-bottom:4px solid #fff; }
+  tr:nth-child(13) { border-bottom:4px solid #fff; }
+  /*
+  td:nth-child(2) {
+    padding-left:4px;
+  }
+  th:nth-child(1) {
+    border-right:1px solid #333;
+  }
+*/
+  
+
+</style>
+</head>
+<body>
+<did id="divBGHeader"></did>
+<did id="divBGBillboard"></did>  
+<div id="divHeader">
+  <div id="divMenuItems"><a href='index.html'>51 Bank</a><a href='console.html'>Console</a><a href='dashboard.html'>Dashboard</a><a id="hldMenuItem" href='docs.html'>Docs</a></div>
+  <div id="divBillboard"></div>
+</div>
+<div id="divMain">
+
+<h1>Banking operations</h1>
+<div>
+You can perform all the common banking operations: from creating a virtual customer to move money between accounts.
+Any operation which succeeds in modifying the underlying data (e.g. creation of an account) is referred as "instruction" and is recorded 
+in a temporal database for auditing purposes.
+
+
+<p>
+  You use curl to commuicate with your bank, although everything happens in your browser
+</div>
+
+<div>
+  The table below documents the mapping between end points and http methods.
+</div>
+<table>
+  <thead>
+    <tr><th>Banking Operation</th><th>Http Method</th><th>End Point</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><a href='#allcustomers'   >1. Get all customers</a></td>     <td>GET</td>    <td>https://api.51bank.io/customers/</td></tr>
+    <tr><td><a href='#newcustomer'    >2. Create a new customer</a></td> <td>POST</td>   <td>https://api.51bank.io/customers/</td></tr>
+    <tr><td><a href='#onecustomer'    >3. Get one customer</a></td>      <td>GET</td>    <td>https://api.51bank.io/customers{/id}</td></tr>
+    <tr><td><a href='#modifycustomer' >4. Modify a customer</a></td>     <td>PATCH</td>  <td>https://api.51bank.io/customers{/id}</td></tr>
+    <tr><td><a href='#deletecustomer' >5. Delete a customer</a></td>     <td>DELETE</td> <td>https://api.51bank.io/customers{/id}</td></tr>
+    <tr><td><a href='#allaccounts'    >6. Get all accounts</a></td>      <td>GET</td>    <td>https://api.51bank.io/accounts/</td></tr>
+    <tr><td><a href='#newaccount'     >7. Create a new account</a></td>  <td>POST</td>   <td>https://api.51bank.io/accounts/</td></tr>
+    <tr><td><a href='#oneaccount'     >8. Get one account</a></td>       <td>GET</td>    <td>https://api.51bank.io/accounts{/id}</td></tr>
+    <tr><td><a href='#modifyaccount'  >9. Modify an account</a></td>     <td>PATCH</td>  <td>https://api.51bank.io/accounts{/id}</td></tr>
+    <tr><td><a href='#deleteaccount'  >10. Delete an account</a></td>    <td>DELETE</td> <td>https://api.51bank.io/accounts{/id}</td></tr>
+    <tr><td><a href='#allpayments'    >11. Get all payments</a></td>     <td>GET</td>    <td>https://api.51bank.io/payments{/id}</td></tr>
+    <tr><td><a href='#newpayment'     >12. Create a new payment</a></td> <td>POST</td>   <td>https://api.51bank.io/payments{/id}</td></tr>
+    <tr><td><a href='#onepayment'     >13. Get one payment</a></td>      <td>GET</td>    <td>https://api.51bank.io/payments{/id}</td></tr>
+    <tr><td><a href='#allinstructions'>14. Get all instructions</a></td> <td>GET</td>    <td>https://api.51bank.io/instructions{/id}</td></tr>
+    <tr><td><a href='#oneinstruction' >15. Get one instruction</a></td>  <td>POST</td>   <td>https://api.51bank.io/instructions{/id}</td></tr>
+  </tbody>
+</table>
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+
+<h2 id="allcustomers">Get all customers</h2>
+<div class="sniplet">
+<div>Listing all customers</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/customers/</code></pre>
+</div>
+
+
+<!-- CUSTOMERS -->
+
+<h2 id="newcustomer">Creating a new customer</h2>
+
+<div>A customer is the legal owner of one or more accounts. When you create one you must provide various KYC attributes: such as name, surname, email, date of dateOfBirth, etc.
+  
+</div>
+
+<div class="sniplet">
+<div>Rosie Neville</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/customers -Xpost \
+  -d firstName=Rosie \
+  -d lastName=Neville \
+  -d email=rosie.neville80@gmail.com \
+  -d nationality=GB \
+  -d dateOfBirth="1980-04-26" \
+  -d address='/GB/flat 4b denison road/london/W8 4F2'
+</code></pre>
+</div>
+
+
+<h2 id="onecustomer">Getting a customer (by Id)</h2>
+<div class="sniplet">
+<div>Retrieving a customer</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/customers{/uniqueId}</code></pre>
+</div>
+
+<!--
+<div class="sniplet">
+<div>Jeff Colinhood</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/customers -Xpost \
+  -d firstName=Jeff \
+  -d lastName=Colinhood \
+  -d email=jeff.colinhood@gmail.com \
+  -d nationality=GB \
+  -d dateOfBirth="1985-08-23" \
+  -d address='/GB/220 cleveland road/london/w13 9pn'
+</code></pre>
+</div>
+
+<div class="sniplet">
+<div>Jonathan Harrison</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/customers -Xpost \
+  -d firstName=Jonathan \
+  -d lastName=Harrison \
+  -d email=jk.harrison@yahoo.co.uk \
+  -d nationality=GB \
+  -d dateOfBirth="1997-02-09" \
+  -d address='/GB/32 chestnut road/london/W4 5AB'
+</code></pre>
+</div>
+
+<div class="sniplet">
+<div>Nancy Williams</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/customers -Xpost \
+  -d firstName=Ann \
+  -d lastName=Williams \
+  -d email=annewilliams@hotmail.com \
+  -d nationality=GB \
+  -d dateOfBirth="1999-05-14" \
+  -d address='/GB/71 southwood road/liverpool/L17 7BQ'
+</code></pre>
+</div>
+  
+-->
+
+<h2 id="modifycustomer">Modifying an existing customer</h2>
+<div>In the event of a mistake while entering the data, or when some circumstances change for the customer (e.g. a new email) 
+  it is always possible to amend a record, via an HTTP patch.
+</div>
+<div class="sniplet">
+<div>Rosie becomes Rose</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/customers{/uniqueId} -Xpatch \
+  -d firstName=Rose
+</code></pre>
+</div>
+    
+<h2 id="deletecustomer">Removing a customer</h2>
+<div>
+If a customer is not linked to any account you can remove it. Otherwise, you need first to ensure you can remove the account.
+</div>
+<div class="sniplet">
+<div>Deleting Rose</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/customers{/uniqueId} -Xdelete</code></pre>
+</div>
+
+<!-- ACCOUNTS -->
+
+<h2 id="allaccounts">Get all accounts</h2>
+<div class="sniplet">
+<div>Listing all accounts</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/accounts/</code></pre>
+</div>
+
+<h2 id="newaccount">Creating a new account</h2>
+<div>
+</div>
+<div class="sniplet">
+<div>Rosie Neville</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/accounts -Xpost \
+  -d customerId={uniqueId} \
+  -d description=a basic account for rosie
+</code></pre>
+</div>
+
+
+<h2 id="oneaccount">Getting an account (by Id)</h2>
+<div class="sniplet">
+<pre><code class='language-curl'>curl https://api.51bank.io/accounts{/uniqueId}</code></pre>
+</div>
+
+<h2 id="modifyaccount">Modifying an existing account</h2>
+<div>In the event of a mistake while entering the data, or when some circumstances change for the account (e.g. new terms) 
+  it is always possible to amend a record, via an HTTP patch.
+</div>
+<div class="sniplet">
+<div>Modifying an account</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/accounts{/uniqueId} -Xpatch \
+  -d "description=basic account (for rose)"
+</code></pre>
+</div>
+    
+<h2 id="deleteaccount">Removing an account</h2>
+<div>
+If an account has a zero balance you can remove it.
+</div>
+<div class="sniplet">
+<div>Deleting an account</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/accounts{/uniqueId} -Xdelete</code></pre>
+</div>
+
+
+<!-- Payments -->
+
+<h2 id="allpayments">Get all payments</h2>
+<div class="sniplet">
+<div>Listing all payments</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/payments/</code></pre>
+</div>
+
+<h2 id="newpayment">Creating a new payment</h2>
+<div>A payment requires you to specify two distinct accounts, the amount to transfer and its currency. An idempotencyKey is required
+  for safely retrying requests without accidentally performing the same operation twice
+<div class="sniplet">
+<div>payment</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/payments/ -Xpost \
+-d debtorId={accountId} \
+-d creditorId={accountId} \
+-d amount=15000 \
+-d currency=GBP\
+-d idempotency=d0LUiZ9BeGz7O5RKc5
+</code></pre>
+</div>
+
+
+<!-- Instructions -->
+
+<h2 id="allinstructions">Get all instructions</h2>
+<div class="sniplet">
+<div>Listing all instructions</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/instructions/</code></pre>
+</div>
+
+<h2 id="newpayment">Getting an instruction (by id)</h2>
+<div>A payment requires you to specify two distinct accounts, the amount to transfer and its currency. An idempotencyKey is required
+  for safely retrying requests without accidentally performing the same operation twice
+<div class="sniplet">
+<div>Getting an instruction</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/instructions{/uniqueId}</code></pre>
+</div>
+
+
+
+<!--
+
+List one customer
+curl https://api.51bank.io/customers/{{uniqueId}}
+
+List all customers 
+curl https://api.51bank.io/customers
+
+</div>
+<h2>Examples</h2>
+<div>Create a new Customer</div>
+<div class='divEditors de7lines'>curl https://api.51bank.io/customers -Xpost \
+  -d firstName=Alice \
+  -d lastName=McCartney \
+  -d email=alice.mccartney@gmail.com \
+  -d nationality=GB \
+  -d dateOfBirth="1985-08-23" \
+  -d address='/GB/220 cleveland road/london/w13 9pn'</div>
+<div>Modify an existing customer</div><div class='divEditors de2lines'>curl https://api.51bank.io/customers/{{uniqueId}} -Xpatch \
+  -d firstName=Alicia</div> 
+<div>Delete an customer</div><div class='divEditors'>curl https://api.51bank.io/customers/{{uniqueId}} -Xdelete</div>
+<div>List one customer</div><div class='divEditors'>curl https://api.51bank.io/customers/{{uniqueId}}</div>
+<div>List all customers</div><div class='divEditors'>curl https://api.51bank.io/customers/</div>
+
+<div>Create a new Account</div>
+<div class='divEditors de3lines'>curl https://api.51bank.io/accounts -Xpost \
+  -d customerId={{uniqueId}} \
+  -d description="A little saving account"</div>
+<div>Modify an existing account</div><div class='divEditors de2lines'>curl https://api.51bank.io/accounts/{{uniqueId}} -Xpatch \
+  -d description="A mini saving account"</div> 
+<div>Delete an account</div><div class='divEditors'>curl https://api.51bank.io/accounts/{{uniqueId}} -Xdelete</div>
+<div>List one account</div><div class='divEditors'>curl https://api.51bank.io/accounts/{{uniqueId}}</div>
+<div>List all accounts</div><div class='divEditors'>curl https://api.51bank.io/accounts/</div>
+
+
+
+-->
+
+</div>
+
+<script src="third.parties/highlight.js.11.5.1/highlight.min.js"></script>
+<script src="third.parties/highlight.js.11.5.1/curl.min.js"></script>
+<script>
+hljs.highlightAll();
+</script>
+</body>
+</html>

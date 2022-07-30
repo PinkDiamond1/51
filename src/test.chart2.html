@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+<link rel="stylesheet" href="51.css">
+
+</head>
+<body>
+<did id="divBGHeader"></did>
+<did id="divBGBillboard"></did>
+<div id="divProgressBar"></div>
+<div id="divHeader">
+  <div id="divMenuItems"><a href='index.html'>51 Bank</a><a href='console.html'>Console</a><a id="hldMenuItem" href='dashboard.html'>Dashboard</a><a href='docs.html'>Docs</a></div>
+  <div id="divBillboard"></div>
+</div>
+<div id="divMain">
+  <h2>Accounts Balance </h2>
+  <div id="divCnvChart"><canvas id='cnvChart'></canvas></div>
+
+  <div style="height:60px;"> <!-- A FOOTER (check: shouldn't we define it in 51css..)--> </div>
+
+</div>
+
+
+<script src='libs/createParseCurl.js'></script>
+<script src='libs/createRestEngine.js'></script>
+<script src='libs/createBillboard.js'></script>
+<script src='libs/createSTPEngine.js'></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@3.8.0/dist/chart.min.js"></script>
+<script>
+
+
+// temporarily I create the chart with just the bank object. 
+function createChart(bank) {
+  
+  const chartArray = []; 
+
+  function syncChartArray() {
+    chartArray.length = 0; 
+    for (let i=0;i<bank.accounts.length;i++) {
+      const { id , balance } = bank.accounts[i];
+      chartArray.push({y : id, x : balance}); 
+    }
+    chartArray.sort((e1,e2) => {
+      return e1.x > e2.x ? - 1 : 
+             e1.x < e2.x ? + 1 : 
+             e1.y > e2.y ? + 1 : -1;
+    });
+  }; 
+  syncChartArray();
+
+  const data = {
+    datasets : [ { 
+      label : 'Balance',
+      data: chartArray,
+      backgroundColor: 'blue',
+    }]
+  };
+
+  
+  
+  const chart = new Chart( document.getElementById('cnvChart').getContext('2d'), {
+    type: 'bar',
+    data, 
+    options : {
+      responsive : true,
+      indexAxis : 'y',
+      plugins : {
+        legend : {
+          display : false
+        }
+      },
+      ticks : {
+        precision:0 // to disallow fractional values e.g 1.5 for the X axis (balance)
+      },
+      maintainAspectRatio: false, // disallow scaling of the height of the bars (as we will resize the parent container)
+    },
+  });    
+
+  divCnvChart.style.minHeight = (chartArray.length * 20) +'px';
+
+  (function loopy() {
+    console.log("looping...");
+    syncChartArray();
+    chart.update('none'); // to avoid any animation
+    setTimeout(loopy, 5000); 
+  })(); 
+}
+
+
+
+
+
+
+
+
+
+
+const parseCurl = createParseCurl();
+
+const bank = {
+  customers : [],
+  accounts : [],
+  payments : []
+};
+
+
+const restEngine = createRestEngine({bank, parseCurl}); 
+
+
+async function pause(time) {
+  return new Promise((res) => setTimeout(res, time));
+};
+
+(async function syncUpToTheLocalStorage() { // syncs up with the localStorage
+  const loader = restEngine.getLSLoader();   // if there are not too many instructions it just reads them as fast as it can
+  if (loader.length < 101) {                 // otherwise it creates a divProgressBar to track the synch-ing exercise.
+    for (let i=0;i<loader.length;i++) {
+      await loader.next(); 
+    }
+  } else {
+    async function pause(time) { return new Promise((res) => setTimeout(res, time)); };
+    const divProgressBar = document.createElement('div');
+    divProgressBar.style.position = 'absolute';
+    divProgressBar.style.top = '80px';
+    divProgressBar.style.left = 0; 
+    divProgressBar.style.height = '2px';
+    divProgressBar.style.background = 'black';
+    document.body.appendChild(divProgressBar); 
+    for (let i=0;i<loader.length;i++) {
+      await loader.next(); 
+      // await pause(0); // encourages the UI thread to yield.  (change the value of pause(500) to test behaviour on slow loading)
+      divProgressBar.style.width = ((i+1) * 100) /loader.length + '%';
+    }
+    document.body.removeChild(divProgressBar); 
+  }
+
+
+  divBillboard.appendChild(createBillboard({
+    bank
+  })); 
+
+  createChart(bank);
+  
+
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<body>
+<button onclick="alert(localStorage.length)">local storage length</button>
+<input type="text" id='txt' />
+<pre id="taMessages"></pre>
+<script>
+for (let i=0;i<localStorage.length;i++) {
+  const value = localStorage.getItem(i); 
+  taMessages.innerHTML+=value+'\n';
+}
+
+txt.onkeydown = function(e) {
+  if (e.keyCode !== 13) { return; }
+  taMessages.innerHTML+=txt.value+'\n';
+  localStorage.setItem(localStorage.length, txt.value);
+  txt.value='';  
+}
+
+window.addEventListener('storage', (event) => {
+
+  console.log('notifying:',event);
+  console.log(localStorage.length);
+  //txt.value = event.newValue; 
+  //txt.onkeydown({keyCode:13}); 
+});
+</script>
+
+
+
+
+</body>
+</html>

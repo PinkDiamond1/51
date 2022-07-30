@@ -1,0 +1,1 @@
+The /builds folder contains the script to build the site hosted via the github pages on /docs
