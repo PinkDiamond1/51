@@ -1,0 +1,168 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+<link rel="stylesheet" href="51.css">
+<link rel="stylesheet" href="third.parties/highlight.js.11.5.1/a11y-dark.min.css">
+</head>
+<body>
+<did id="divBGHeader"></did>
+<did id="divBGBillboard"></did>  
+<div id="divHeader">
+  <div id="divMenuItems"><a href='index.html'>51 Bank</a><a href='console.html'>Console</a><a href='dashboard.html'>Dashboard</a><a id="hldMenuItem" href='docs.html'>Docs</a></div>
+  <div id="divBillboard"></div>
+</div>
+<div id="divMain">
+<h1>Get Started</h1>
+<div>
+I find examples are often the easiest way to explain. So, here, we are going to make a simple payment between two bank accounts. 
+To do so, we will create two customers (people), two bank accounts (one for each customer) and one payment from one bank account to the other one.
+</div>
+<div>
+We are going to do this in 5 simple steps.
+</div>
+<div>
+
+<h2>1. Create your first customer</h2>
+<div>Go to the console and type the following: </div>  
+<div class="sniplet">
+<div>Creating Alice</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/customers -Xpost \
+  -dfirstName=Alice \
+  -dlastName=McCartney \
+  -demail=alice.mccartney@gmail.com \
+  -dnationality=GB \
+  -ddateOfBirth="1985-08-23" \
+  -daddress="/GB/220 cleveland road/london/w13 9pn"</code></pre>
+</div>
+<div>This creates a customer and will return an HTTP 2xx with a unique identifier for it.</div>
+
+<h2>2. Create your second customer</h2>
+<div></div>
+<div class="sniplet">
+<div>Creating Bob</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/customers -Xpost \
+  -d firstName=Bob \
+  -d lastName=Burton \
+  -d email=bob.burton77@gmail.com \
+  -d nationality=GB \
+  -d dateOfBirth="1977-02-11" \
+  -d address="/GB/44 thames road/london/ec2 4ah"</code></pre>
+</div>
+<div>
+  This too creates a customer and will return an HTTP 2xx with a unique identifier for it.
+</div>
+
+<h2>3. Create an Account for the first customer</h2>
+<div>
+The next step is about creating one account for Alice
+To do so we must execute the following curl , making sure that we set the customerId correctly
+</div>
+<div class="sniplet">
+<div>Creating an account for Alice</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/accounts -Xpost \
+  -d customerId={uniqueId} \
+  -d type=personal</code></pre>
+</div>
+
+<div>
+if you don't remember the customerId for Alice, you can run an http GET against the customers 
+</div>
+<div id="divGetAllCustomers"></div>
+
+<h2>4. Create an Account for the second customer</h2>
+<div>
+  Let's do the same for Bob. 
+</div>  
+<div class="sniplet">
+<div>Creating an account for Bob</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/accounts -Xpost \
+  -d customerId={uniqueId} \
+  -d type=personal</code></pre>
+</div> 
+
+<h2>5. Make a payment</h2>
+<div>
+  And finally let's have Bob send some money to Alice (or viceversa)
+<div class="sniplet">
+<div>From Bob to Alice</div>
+<pre><code class='language-curl'>curl https://api.51bank.io/payments -Xpost \
+  -d debtorId={accountId} \
+  -d creditorId={accountId} \
+  -d amount=1000 \
+  -d currency=GBP \
+  -d idempotency=d0LUiZ9BeGz7O5RKc5</code></pre>
+</div> 
+</div>
+<p>
+<div>
+  And there you have it:  a bank with two customers (Bob and Alice) and your first transfer.
+  Please, spend some time now, 
+</div>
+
+<script src="third.parties/highlight.js.11.5.1/highlight.min.js"></script>
+<script src="third.parties/highlight.js.11.5.1/curl.min.js"></script>
+<script src="curlets.js"></script>
+<script>
+
+function createSnippet(parentNode, snippet) {
+  const divBtn = document.createElement('div');
+  divBtn.style.position = 'absolute';
+  divBtn.style.marginTop = '10px';
+  divBtn.style.right = '10px';
+  const btn = document.createElement('button'); 
+  btn.innerHTML = 'try';
+  btn.onclick = function() {
+    sessionStorage.setItem('editorContent', curlets[snippet]);
+    window.location.href = 'console.html';
+  }
+  divBtn.appendChild(btn); 
+  const pre = document.createElement('pre');
+  const code = document.createElement('code');
+  code.className = 'language-curl';
+  code.innerHTML = curlets[snippet];
+  pre.appendChild(code);
+
+  parentNode.appendChild(divBtn);
+  parentNode.appendChild(pre);   
+  parentNode.onmouseover = function() { divBtn.style.display ='block'}
+  parentNode.onmouseout = function() { divBtn.style.display ='none'}
+  divBtn.style.display ='none'
+  //parentNode.style.margin='20px 0';
+  //parentNode.style.border='1px solid #888';
+}
+
+//createSnippet(divPostAlice,'postAlice');
+/*
+createSnippet(divPostBob, 'postBob');
+createSnippet(divPostAnAccount, 'postAccount');
+createSnippet(divGetAllCustomers, 'getAllCustomers');
+createSnippet(divPostAnAccount2, 'postAccount');
+createSnippet(divPostPayment, 'postPayment');
+*/
+/*
+prePostAlice.innerHTML = curlets.postAlice;
+btnPushPostAlice.onclick = function() {
+  sessionStorage.setItem('editorContent', curlets.postAlice);
+  window.location.href = 'console.html';
+}
+prePostBob.innerHTML = curlets.postBob;
+btnPushPostBob.onclick = function() {
+  sessionStorage.setItem('editorContent', curlets.postBob);
+  window.location.href = 'console.html';
+}
+
+preGetAllCustomers.innerHTML = curlets.getAllCustomers;
+btnGetAllCustomers.onclick = function() {
+  sessionStorage.setItem('editorContent', curlets.getAllCustomers);
+  window.location.href = 'console.html';
+}
+*/
+hljs.highlightAll();
+
+</script>
+</body>
+</html>

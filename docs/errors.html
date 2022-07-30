@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+<link rel="stylesheet" href="51bank.css">
+</head>
+<body>
+<div id="divMain">
+<h1>Syntax Errors</h1>  
+<h4>Expecting CURL Command</h4>
+<div>The command that was typed does not begin with "CURL"</div>
+<div>Example: <pre>hello</pre></div>
+<h4>Abrupt New Line</h4>
+<div>The command is missing the backslash (\) character at the end of a line. 
+     The backslash character is required to indicate that the command continues on the next line.  </div>
+<h4>Duplicate URL Definition</h4>
+<div>More than one URL was found in the command, leaving the parser unable to continue</div>
+<h4>Unsupported Option</h4>
+<div>The CURL parser does not support a specified option. This might be a valid option (e.g. -s) or an invalid option. 
+     Current option support is very limited to few options '-d', '-x' </div>
+<h4>Post/Patch without data</h4>     
+<div>The command is asking either to post or to patch but without data. The current version of the CURL Parser does not allow it.</div>
+<h4>Invalid Http Method</h4>
+<div>The requested method is not valid</div>
+
+</div>
+
+
+</body>
+</html>
+
+<!--
+// All possible errors:                    code      Additional info 
+// - expecting CURL Command                   0      none
+// - abrupt new line                          1      none
+// - Duplicate URL definition                 2      the URLs 
+// - unsupported option                       3      the unsupported operation (e.g -s). Note this might be a valid CURL option which sadly our parser does not handle.
+// - post/patch without data*                 4      none
+// - Invalid Http Method                      5      the method (e.g. -Xpush)
+// - Duplicate parameter in -d or -data       6      the duplicate parameter
+// - Undefined URL                            7      none
+// - URL not allowed                          8      the disallowed url 
+-->

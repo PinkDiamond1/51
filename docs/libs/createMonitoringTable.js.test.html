@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="x-ua-compatible" content="ie=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+<title></title>
+</head>
+<body style="margin:30px;">
+<h2>create monitoring table</h2>
+<div id='divMain'></div>
+
+<div style="height:30px;"></div>
+<hr>
+<pre style="font-size:12px;" >
+  Use the developer's console to update the underlying data model (array).
+  array.push({id:'4',name:'lol0',surname:'yoyo0', friends: ['1','2'], address : { street: 'ludlow', no: 0 }});
+  array.splice(2,1);</pre>
+<script src='createMonitoringTable.js'></script>
+<script>
+let array = [];
+//array.push({id:'0',name:'lol0',surname:'yoyo0', friends: ['1','2'], address : { street: 'ludlow', no: 0 }});
+//array.push({id:'1',name:'lol1',surname:'yoyo1', friends: ['1','2'], address : { street: 'ludlow', no: 1 }});
+//array.push({id:'2',name:'lol2',surname:'yoyo2', address : { street: 'ludlow', no: 2 }});
+
+table  = createMonitoringTable({ array,  columns: [ 'id','name','surname', 'friends', 'address.street', 'address.no' ] });
+divMain.appendChild(table);
+</script>  
+</body>
+</html>
