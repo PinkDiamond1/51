@@ -6,8 +6,8 @@
 
   const fse = require('fs-extra');
   const { minify } = require("terser");
-
   const  htmlMinifier = require('html-minifier-terser');
+  const CleanCSS = require('clean-css');
 
   fse.emptyDirSync('./docs'); 
   console.log('removed any file in /docs'); 
@@ -45,9 +45,17 @@
     minifyCSS : true,
     collapseWhitespace: true
   }));
+  fse.writeFileSync('./docs/console.html', code); 
 
-  console.log(code);
+  console.log('now css');
+  
 
+  code = fse.readFileSync('./docs/51.css',{encoding:'utf8', flag:'r'});
+  code = new CleanCSS().minify(code).styles;
+  fse.writeFileSync('./docs/51.css', code); 
+
+  
+  
   console.log('build completed !!!');
 
 })();
