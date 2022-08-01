@@ -12,7 +12,6 @@ const CleanCSS = require('clean-css');
 
 
 async function compress(filename) {
-  
   let code = fse.readFileSync(filename,{encoding:'utf8', flag:'r'});
   if (filename.endsWith('.js'))   { code = (await minify(code)).code; }
   if (filename.endsWith('.css'))  { code = new CleanCSS().minify(code).styles; }
