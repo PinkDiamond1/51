@@ -2,12 +2,26 @@
 // nodejs script to build from the /src folder
 // the whole website into /docs
 //
-(async function build() {
 
-  const fse = require('fs-extra');
-  const { minify } = require("terser");
-  const  htmlMinifier = require('html-minifier-terser');
-  const CleanCSS = require('clean-css');
+
+
+const fse = require('fs-extra');
+const { minify } = require("terser");
+const  htmlMinifier = require('html-minifier-terser');
+const CleanCSS = require('clean-css');
+
+
+async function compress(filename) {
+  
+  let code = fse.readFileSync(filename,{encoding:'utf8', flag:'r'});
+  if (filename.endsWith('.js'))   { code = (await minify(code)).code; }
+  if (filename.endsWith('.css'))  { code = new CleanCSS().minify(code).styles; }
+  if (filename.endsWith('.html')) { code = (await htmlMinifier.minify(code, { minifyJS : true, minifyCSS : true, collapseWhitespace: true  })) }
+  fse.writeFileSync(filename, code); 
+}
+
+
+(async function build() {
 
   fse.emptyDirSync('./docs'); 
   console.log('removed any file in /docs'); 
@@ -18,42 +32,13 @@
 
   console.log('compressing the js files with terser');
 
-  code = fse.readFileSync('./docs/libs/createBillboard.js',{encoding:'utf8', flag:'r'});
-  code = (await minify(code)).code;
-  fse.writeFileSync('./docs/libs/createBillboard.js', code); 
-  
-  code = fse.readFileSync('./docs/libs/createMonitoringTable.js',{encoding:'utf8', flag:'r'});
-  code = (await minify(code)).code;
-  fse.writeFileSync('./docs/libs/createMonitoringTable.js', code); 
-
-  code = fse.readFileSync('./docs/libs/createParseCurl.js',{encoding:'utf8', flag:'r'});
-  code = (await minify(code)).code;
-  fse.writeFileSync('./docs/libs/createParseCurl.js', code); 
-
-  code = fse.readFileSync('./docs/libs/createRestEngine.js',{encoding:'utf8', flag:'r'});
-  code = (await minify(code)).code;
-  fse.writeFileSync('./docs/libs/createRestEngine.js', code); 
-
-  code = fse.readFileSync('./docs/libs/createSTPEngine.js',{encoding:'utf8', flag:'r'});
-  code = (await minify(code)).code;
-  fse.writeFileSync('./docs/libs/createSTPEngine.js', code); 
-
-
-  code = fse.readFileSync('./docs/console.html',{encoding:'utf8', flag:'r'});
-  code = (await htmlMinifier.minify(code, {
-    minifyJS : true,
-    minifyCSS : true,
-    collapseWhitespace: true
-  }));
-  fse.writeFileSync('./docs/console.html', code); 
-
-  console.log('now css');
-  
-
-  code = fse.readFileSync('./docs/51.css',{encoding:'utf8', flag:'r'});
-  code = new CleanCSS().minify(code).styles;
-  fse.writeFileSync('./docs/51.css', code); 
-
+  compress('./docs/libs/createBillboard.js');
+  compress('./docs/libs/createMonitoringTable.js');
+  compress('./docs/libs/createParseCurl.js');
+  compress('./docs/libs/createRestEngine.js');
+  compress('./docs/libs/createSTPEngine.js'); 
+  compress('./docs/console.html');
+  compress('./docs/51.css');
   
   
   console.log('build completed !!!');
