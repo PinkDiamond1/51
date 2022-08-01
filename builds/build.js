@@ -39,8 +39,6 @@ function *walkSync(dir) {
 
 (async function build() {
 
-
-
   fse.emptyDirSync('./docs'); 
   console.log('removed any file in /docs'); 
 
@@ -53,28 +51,7 @@ function *walkSync(dir) {
   for (const file of walkSync('./docs')) {
     await compress(file);
   }
-  /*
-  for (const file of array) {
-    console.log('compressing '+file); 
-    await compress(file); 
-  }
-  */
- /*
-  await compress('./docs/libs/createBillboard.js');
-  await compress('./docs/libs/createMonitoringTable.js');
-  await compress('./docs/libs/createParseCurl.js');
-  await compress('./docs/libs/createRestEngine.js');
-  await compress('./docs/libs/createSTPEngine.js'); 
-  await compress('./docs/console.html');
-  await compress('./docs/dashboard.html');
-  await compress('./docs/docs.html');
-  await compress('./docs/docs.banking.operations.html');
-  await compress('./docs/docs.get.started.html');
-  await compress('./docs/errors.html');
-  await compress('./docs/examples.html');
-  // await compress('./docs/51.css');
-  */
-  
+
   console.log('build completed !!!');
 
 })();
