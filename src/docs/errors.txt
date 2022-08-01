@@ -1,8 +1,0 @@
-
-
-
-You communicate with the payment engine via curl.
-
-There are some errors that can occur before you succeed to send a message to the API engine.
-
-- syntax errors in curl
