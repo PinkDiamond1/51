@@ -3,8 +3,6 @@
 // the whole website into /docs
 //
 
-
-
 const fse = require('fs-extra');
 const path = require('path');
 const { minify } = require("terser");
@@ -14,9 +12,12 @@ const CleanCSS = require('clean-css');
 
 async function compress(filename) {
   let code = fse.readFileSync(filename,{encoding:'utf8', flag:'r'});
+  const originalLength = code.length;
   if (filename.endsWith('.js'))   { code = (await minify(code)).code; }
   if (filename.endsWith('.css'))  { code = new CleanCSS().minify(code).styles; }
   if (filename.endsWith('.html')) { code = (await htmlMinifier.minify(code, { minifyJS : true, minifyCSS : true, collapseWhitespace: true  })) }
+  const length = code.length;
+  console.log(filename + ' - ' +(length *100 /originalLength).toFixed(2) + '%');
   fse.writeFileSync(filename, code); 
 }
 
@@ -50,8 +51,7 @@ function *walkSync(dir) {
   console.log('compressing all the resources in docs'); 
 
   for (const file of walkSync('./docs')) {
-    console.log('compressing: '+file);
-    compress(file);
+    await compress(file);
   }
   /*
   for (const file of array) {
