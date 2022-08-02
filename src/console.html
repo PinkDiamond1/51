@@ -66,14 +66,16 @@
 <script src='libs/createRestEngine.js'></script>
 <script src='libs/createBillboard.js'></script>
 <script src='libs/createSTPEngine.js'></script>
-<script src='third.parties\ace.1.6.0\ace.js'></script>
-<script src='third.parties\ace.1.6.0\ext-language_tools.js'></script>
-
+<script src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.6.0/ace.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/ace/1.6.0/ext-language_tools.min.js'></script>
 <script>
 
-
 const editor = ace.edit('divEditor');
-editor.getSession().setMode('ace/mode/curl'); // We really need a curl editor
+
+ace.config.setModuleUrl('ace/mode/curl', 'libs/ace.mode-curl.js'); // Curl editor
+editor.setOption("mode", 'ace/mode/curl');
+
+
 
 // CONVENIENCE: When the user clicks near the editor we want the editor to get back 
 window.onmousedown = function (e) {
@@ -173,12 +175,18 @@ editor.setFontSize(16);
 editor.container.style.lineHeight = "1.6";
 editor.renderer.updateFontSize();
 
+{ // Quick hack to size the autocompletion popup width (defaults to 300px but we need at least 350px)
+  const stylesheet = document.styleSheets[0]
+  stylesheet.insertRule('.ace_autocomplete { width: 350px !important; }');
+  console.log(stylesheet);
+}
+
 editor.setOptions({
   enableBasicAutocompletion: [{
     identifierRegexps: [/[a-zA-Z_0-9\//\=\.\-\u00A2-\uFFFF]/], /* need to check on \u00A2- ...*/
     getCompletions: (editor, session, pos, prefix, callback) => {
       // console.log("'"+prefix+"'");
-
+      
       curlEditorAnalyzer.synchUp(); 
 
       // logic for linking fields 
