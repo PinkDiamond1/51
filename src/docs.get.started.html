@@ -100,67 +100,8 @@ if you don't remember the customerId for Alice, you can run an http GET against 
   And there you have it:  a bank with two customers (Bob and Alice) and your first transfer.
   Please, spend some time now, 
 </div>
-
 <script src="third.parties/highlight.js.11.5.1/highlight.min.js"></script>
 <script src="third.parties/highlight.js.11.5.1/curl.min.js"></script>
-<script src="curlets.js"></script>
-<script>
-
-function createSnippet(parentNode, snippet) {
-  const divBtn = document.createElement('div');
-  divBtn.style.position = 'absolute';
-  divBtn.style.marginTop = '10px';
-  divBtn.style.right = '10px';
-  const btn = document.createElement('button'); 
-  btn.innerHTML = 'try';
-  btn.onclick = function() {
-    sessionStorage.setItem('editorContent', curlets[snippet]);
-    window.location.href = 'console.html';
-  }
-  divBtn.appendChild(btn); 
-  const pre = document.createElement('pre');
-  const code = document.createElement('code');
-  code.className = 'language-curl';
-  code.innerHTML = curlets[snippet];
-  pre.appendChild(code);
-
-  parentNode.appendChild(divBtn);
-  parentNode.appendChild(pre);   
-  parentNode.onmouseover = function() { divBtn.style.display ='block'}
-  parentNode.onmouseout = function() { divBtn.style.display ='none'}
-  divBtn.style.display ='none'
-  //parentNode.style.margin='20px 0';
-  //parentNode.style.border='1px solid #888';
-}
-
-//createSnippet(divPostAlice,'postAlice');
-/*
-createSnippet(divPostBob, 'postBob');
-createSnippet(divPostAnAccount, 'postAccount');
-createSnippet(divGetAllCustomers, 'getAllCustomers');
-createSnippet(divPostAnAccount2, 'postAccount');
-createSnippet(divPostPayment, 'postPayment');
-*/
-/*
-prePostAlice.innerHTML = curlets.postAlice;
-btnPushPostAlice.onclick = function() {
-  sessionStorage.setItem('editorContent', curlets.postAlice);
-  window.location.href = 'console.html';
-}
-prePostBob.innerHTML = curlets.postBob;
-btnPushPostBob.onclick = function() {
-  sessionStorage.setItem('editorContent', curlets.postBob);
-  window.location.href = 'console.html';
-}
-
-preGetAllCustomers.innerHTML = curlets.getAllCustomers;
-btnGetAllCustomers.onclick = function() {
-  sessionStorage.setItem('editorContent', curlets.getAllCustomers);
-  window.location.href = 'console.html';
-}
-*/
-hljs.highlightAll();
-
-</script>
+<script>hljs.highlightAll();</script>
 </body>
 </html>
