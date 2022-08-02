@@ -22,8 +22,6 @@ const createSTPEngine = function(config) {
         const message = 'curl '+customer.url+' -u stp.engine -Xpatch -dstatus=active'; 
         const request = parseCurl(message); // we should assume that this always succeeds ?
                                             // or could a user move it to active between the engine's check and its request ???
-
-                                            console.log(request);
         await restEngine.executeRequest(request); // we should assume that this always succeeds .  
 
       }

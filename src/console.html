@@ -178,7 +178,6 @@ editor.renderer.updateFontSize();
 { // Quick hack to size the autocompletion popup width (defaults to 300px but we need at least 350px)
   const stylesheet = document.styleSheets[0]
   stylesheet.insertRule('.ace_autocomplete { width: 350px !important; }');
-  console.log(stylesheet);
 }
 
 editor.setOptions({
