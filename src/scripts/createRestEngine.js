@@ -414,7 +414,7 @@ const createRestEngine = function(config) {
     // business RULE !!!
     const e = bank.customers.find(customer => customer.email === data.email);
     if (e !== undefined) {
-      return createHttp400(0, 'email already used by another customer', { email : e.person.email }); 
+      return createHttp400(0, 'email already used by another customer', { email : e.email }); 
     }
 
     const response = await System51.store(text);
