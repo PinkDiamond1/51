@@ -183,7 +183,7 @@ const createRestEngine = function(config) {
     return s === 'created' || s === 'active' || s === 'inactive';
   }
 
-  // A valid "allDigitNumber" is a number with no decimal (2.0), no exponential representation (10e3), no sign (+20,-30)
+  // A valid "allDigitNumber" is a number with no decimal (2.12), no exponential representation (10e3), no sign (+20,-30)
   // A valid amount is a string made of only digits (0123456789) starting with a non-zero digit.
   function isOnlyDigitsPositiveNumber(str) {
     if (/^\d+$/.test(str) === false)             return false; // 
@@ -244,7 +244,6 @@ const createRestEngine = function(config) {
   async function deleteCustomersId(id, text) { 
     const ix = bank.customers.findIndex( customer => customer.id === id ); 
     if (ix === -1) return createHttp404('Invalid id for Customer'); 
-    
     
     const response = await System51.store(text);
     if (response === false) return createHttp503();  
