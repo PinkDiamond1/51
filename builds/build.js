@@ -9,7 +9,10 @@ const { minify } = require("terser");
 const  htmlMinifier = require('html-minifier-terser');
 const CleanCSS = require('clean-css');
 
-
+//
+// Compress the given file (reads it, packs it, rewrites it).
+// it works for .js, .css and .html files
+//
 async function compress(filename) {
   let code = fse.readFileSync(filename,{encoding:'utf8', flag:'r'});
   const originalLength = code.length;
