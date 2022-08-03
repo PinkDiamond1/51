@@ -20,8 +20,8 @@
   line-height:20px;
   white-space:pre;
   color:black;
-  padding:3px 100px 3px  100px;
-  margin: 0  -100px 0   -100px; 
+  padding:3px 500px 3px  500px;
+  margin: 0  -500px 0   -500px; 
 }
 
 
@@ -35,14 +35,6 @@
   position:absolute;
   font-weight: bold;
 }
-
-#divCurlTitle {
-  font-family:Monaco, Menlo, 'Ubuntu Mono', Consolas, source-code-pro, monospace;
-  font-size:24px;
-  padding:6px 0 0 0;
-  height:48px;
-  user-select: none;
-}
 </style>
 </head>
 <body>
@@ -53,12 +45,9 @@
   <div id="divBillboard"></div>
 </div>
 <div id="divMain">
-  <h2 id="divCurlTitle">Curl<span style="letter-spacing:-3px;">://</span></h2>
+  <br>
   <div id="divGT" >&gt;</div>
   <div id="divEditor"></div>
-  <!--
-  <div style="font-size:12px;text-align:right;font-style:italic;">if you don't know what to write, <a href='examples.html'>see some examples</a></div>
-  -->
   <div id="divResponse"></div>
   <div id='divFooter'></div>
 </div>
@@ -81,9 +70,10 @@ editor.setOption("mode", 'ace/mode/curl');
 window.onmousedown = function (e) {
   const target = e.target;
   if (target.tagName === 'HTML' || 
-      target === divCurlTitle || 
       target === divGT ||
-      target === divMain) editor.focus(); 
+      target === divMain) {
+        setTimeout(function() { editor.focus(); },0); 
+      } 
 }
 
 // CONVENIENCE: Use the sessionStorage to temporarily save and restore the content of the editor

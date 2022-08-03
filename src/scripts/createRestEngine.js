@@ -179,10 +179,6 @@ const createRestEngine = function(config) {
     return d.toISOString().slice(0,10) === dateString;
   }
 
-  function isValidStatusForCustomer(s) {
-    return s === 'created' || s === 'active' || s === 'inactive';
-  }
-
   // A valid "allDigitNumber" is a number with no decimal (2.12), no exponential representation (10e3), no sign (+20,-30)
   // A valid amount is a string made of only digits (0123456789) starting with a non-zero digit.
   function isOnlyDigitsPositiveNumber(str) {
@@ -192,10 +188,14 @@ const createRestEngine = function(config) {
     return (i < 999999999); // must be smaller than some threshold
   }  
 
+  function isValidStatusForCustomer(s) {
+    return s === 'created' || s === 'active' || s === 'inactive';
+  }
 
 //
-// REST 
-//
+// REST METHODS 
+// ============
+// 
 
   function createHttp503()                                   { return { httpStatusCode : 503, payload : { message : 'localStorage is busy. Please try again later' } } } // <-- to do better message
   function createHttp400(errorCode, message, additionalInfo) { return { httpStatusCode : 400, payload : { errorCode, message, additionalInfo } } }
