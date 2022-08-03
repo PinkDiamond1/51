@@ -25,7 +25,9 @@ async function compress(filename) {
   fse.writeFileSync(filename, code); 
 }
 
-
+//
+//
+//
 function *walkSync(dir) {
   const files = fse.readdirSync(dir, { withFileTypes: true });
   for (const file of files) {
